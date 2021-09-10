@@ -11,7 +11,6 @@ function areEqual(a: Model, b: Model): boolean {
 
 export function getOperationResults(operationResponses: OperationResponse[]): OperationResponse[] {
     const operationResults: OperationResponse[] = [];
-
     // Filter out success response codes, but skip "204 No Content"
     operationResponses.forEach(operationResponse => {
         const { code } = operationResponse;
