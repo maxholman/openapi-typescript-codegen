@@ -1,0 +1,14 @@
+{{>header}}
+
+{{#each models}}
+{{#if enum}}
+export { {{{name}}} } from './models/{{{name}}}';
+{{else if @root.useUnionTypes}}
+export type { {{{name}}} } from './models/{{{name}}}';
+{{else if enums}}
+export { {{{name}}} } from './models/{{{name}}}';
+{{else}}
+export type { {{{name}}} } from './models/{{{name}}}';
+{{/if}}
+
+{{/each}}

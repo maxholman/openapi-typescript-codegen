@@ -8,7 +8,7 @@ import { isSubDirectory } from './isSubdirectory';
 import { Templates } from './registerHandlebarTemplates';
 import { writeClientCore } from './writeClientCore';
 import { writeClientIndex } from './writeClientIndex';
-import { writeClientModels } from './writeClientModels';
+import { writeClientModelIndex, writeClientModels } from './writeClientModels';
 import { writeClientSchemas } from './writeClientSchemas';
 import { writeClientServices } from './writeClientServices';
 
@@ -76,6 +76,7 @@ export async function writeClient(
             client.models = dateTypeOverride(client.models);
         }
         await writeClientModels(client.models, templates, outputPathModels, httpClient, useUnionTypes);
+        await writeClientModelIndex(client.models, templates, output);
     }
 
     if (exportCore || exportServices || exportSchemas || exportModels) {
