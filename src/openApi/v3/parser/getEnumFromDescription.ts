@@ -1,3 +1,4 @@
+import camelCase from 'camelcase';
 import type { Enum } from '../../../client/interfaces/Enum';
 
 export function getEnumFromDescription(description: string): Enum[] {
@@ -13,11 +14,7 @@ export function getEnumFromDescription(description: string): Enum[] {
                 const value = parseInt(match.split('=')[1].replace(/[^0-9]/g, ''));
                 if (name && Number.isInteger(value)) {
                     symbols.push({
-                        name: name
-                            .replace(/\W+/g, '_')
-                            .replace(/^(\d+)/g, '_$1')
-                            .replace(/([a-z])([A-Z]+)/g, '$1_$2')
-                            .toUpperCase(),
+                        name: camelCase(name, { pascalCase: true }),
                         value: String(value),
                         type: 'number',
                         description: null,
