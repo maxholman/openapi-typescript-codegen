@@ -1,14 +1,21 @@
 {{>header}}
 
 import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
 
-type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
+export type Resolver<T> = (options: ApiRequestOptions) => T | Promise<T>;
 type Headers = Record<string, string>;
 
-type Config = {
-    BASE: string;
+export type RequestMethod = (
+  options: ApiRequestOptions,
+  localConfig?: Config,
+) => Promise<ApiResult>;
+
+export type Config = {
+    BASE: URL;
     VERSION: string;
-    WITH_CREDENTIALS: boolean;
+    WITH_CREDENTIALS?: boolean;
+    REQUEST: RequestMethod;
     TOKEN?: string | Resolver<string>;
     USERNAME?: string | Resolver<string>;
     PASSWORD?: string | Resolver<string>;
@@ -16,11 +23,9 @@ type Config = {
 }
 
 export const OpenAPI: Config = {
-    BASE: '{{{server}}}',
+    BASE: new URL('{{{server}}}'),
     VERSION: '{{{version}}}',
-    WITH_CREDENTIALS: false,
-    TOKEN: undefined,
-    USERNAME: undefined,
-    PASSWORD: undefined,
-    HEADERS: undefined,
+    REQUEST: () => {
+        throw new Error('Implement me')
+    }
 };

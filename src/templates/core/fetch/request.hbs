@@ -3,6 +3,7 @@
 import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import type { ApiResult } from './ApiResult';
+import type { Config, Resolver } from './OpenAPI';
 import { OpenAPI } from './OpenAPI';
 
 {{>functions/isDefined}}
@@ -49,13 +50,15 @@ import { OpenAPI } from './OpenAPI';
 
 /**
  * Request using fetch client
- * @param options The request options from the the service
- * @returns ApiResult
- * @throws ApiError
+ * @param {ApiRequestOptions} options The request options from the service
+ * @param {Config} [localConfig] Runtime overrides for the specific API request
+ * @returns {ApiResult}
+ * @throws {ApiError}
  */
-export async function request(options: ApiRequestOptions): Promise<ApiResult> {
-    const url = getUrl(options);
-    const response = await sendRequest(options, url);
+export async function request(options: ApiRequestOptions, localConfig?: Config): Promise<ApiResult> {
+    const config = localConfig || OpenAPI;
+    const url = getUrl(options, config);
+    const response = await sendRequest(options, url, config);
     const responseBody = await getResponseBody(response);
     const responseHeader = getResponseHeader(response, options.responseHeader);
 
